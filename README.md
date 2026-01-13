@@ -31,7 +31,7 @@
 ## 📖 Giới thiệu <a name="gioi-thieu"></a>
 Dự án **Database_Carving-InSQL** được thực hiện nhằm đánh giá tính khả thi và hiệu quả của kỹ thuật **Database Carving** trong việc phát hiện các hành vi vi phạm bảo mật, đặc biệt trong các tình huống **Audit Log bị vô hiệu hóa**.
 
-[cite_start]Đề tài tập trung vào việc phân tích trực tiếp các file lưu trữ vật lý (data file) của cơ sở dữ liệu Oracle để tìm kiếm các "dấu vết số" (digital artifacts) còn sót lại ngay cả khi dữ liệu đã bị xóa (DELETE) hoặc cập nhật (UPDATE) mà không để lại vết trong Log[cite: 64, 65].
+[1]Đề tài tập trung vào việc phân tích trực tiếp các file lưu trữ vật lý (data file) của cơ sở dữ liệu Oracle để tìm kiếm các "dấu vết số" (digital artifacts) còn sót lại ngay cả khi dữ liệu đã bị xóa (DELETE) hoặc cập nhật (UPDATE) mà không để lại vết trong Log[cite: 64, 65].
 
 ## ⚠️ Vấn đề & Giải pháp <a name="van-de"></a>
 
