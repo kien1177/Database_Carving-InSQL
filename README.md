@@ -31,33 +31,33 @@
 ## 📖 Giới thiệu <a name="gioi-thieu"></a>
 Dự án **Database_Carving-InSQL** được thực hiện nhằm đánh giá tính khả thi và hiệu quả của kỹ thuật **Database Carving** trong việc phát hiện các hành vi vi phạm bảo mật, đặc biệt trong các tình huống **Audit Log bị vô hiệu hóa**.
 
-[1]Đề tài tập trung vào việc phân tích trực tiếp các file lưu trữ vật lý (data file) của cơ sở dữ liệu Oracle để tìm kiếm các "dấu vết số" (digital artifacts) còn sót lại ngay cả khi dữ liệu đã bị xóa (DELETE) hoặc cập nhật (UPDATE) mà không để lại vết trong Log[cite: 64, 65].
+Đề tài tập trung vào việc phân tích trực tiếp các file lưu trữ vật lý (data file) của cơ sở dữ liệu Oracle để tìm kiếm các "dấu vết số" (digital artifacts) còn sót lại ngay cả khi dữ liệu đã bị xóa (DELETE) hoặc cập nhật (UPDATE) mà không để lại vết trong Log.
 
 ## ⚠️ Vấn đề & Giải pháp <a name="van-de"></a>
 
 ### Vấn đề: Insider Threat (Tấn công nội bộ)
-* [cite_start]30% các vụ vi phạm dữ liệu nhắm vào Database, thường do người nội bộ có quyền hạn cao thực hiện[cite: 59].
-* [cite_start]Quản trị viên (DBA) có thể **vô hiệu hóa Audit Log** hoặc xóa dấu vết trước khi thực hiện hành vi xấu[cite: 61].
-* [cite_start]Khi Log bị tắt, các phương pháp giám sát truyền thống trở nên vô hiệu[cite: 62].
+* 30% các vụ vi phạm dữ liệu nhắm vào Database, thường do người nội bộ có quyền hạn cao thực hiện.
+* Quản trị viên (DBA) có thể **vô hiệu hóa Audit Log** hoặc xóa dấu vết trước khi thực hiện hành vi xấu.
+* Khi Log bị tắt, các phương pháp giám sát truyền thống trở nên vô hiệu.
 
 ### Giải pháp: Database Carving
-[cite_start]Sử dụng kỹ thuật điều tra pháp y số (Digital Forensics) để đọc trực tiếp file `.DBF` (trong Oracle) ở cấp độ nhị phân (binary), bỏ qua hoàn toàn tầng SQL và Audit Log[cite: 114, 115].
+Sử dụng kỹ thuật điều tra pháp y số (Digital Forensics) để đọc trực tiếp file `.DBF` (trong Oracle) ở cấp độ nhị phân (binary), bỏ qua hoàn toàn tầng SQL và Audit Log.
 
 ## ⚙️ Phương pháp kỹ thuật <a name="phuong-phap"></a>
 Dự án sử dụng phương pháp **Disk Forensics** kết hợp với **Python** để giải mã cấu trúc file dữ liệu:
 
-1.  [cite_start]**Thu thập:** Sao chép nguyên vẹn file vật lý (ví dụ: `FORENSIC01.DBF`)[cite: 211, 233].
-2.  [cite_start]**Phân tích cấu trúc Page:** Dựa trên cấu trúc Data Block của Oracle để xác định header, row directory và free space[cite: 154].
-3.  [cite_start]**Pattern Matching:** Quét các byte đặc trưng trong row header để tìm các bản ghi bị đánh dấu là "deleted" nhưng chưa bị ghi đè[cite: 236, 238].
+1.  **Thu thập:** Sao chép nguyên vẹn file vật lý (ví dụ: `FORENSIC01.DBF`).
+2.  **Phân tích cấu trúc Page:** Dựa trên cấu trúc Data Block của Oracle để xác định header, row directory và free space.
+3.  **Pattern Matching:** Quét các byte đặc trưng trong row header để tìm các bản ghi bị đánh dấu là "deleted" nhưng chưa bị ghi đè.
 
 
 ## 🛠 Cài đặt & Thực nghiệm <a name="cai-dat"></a>
 
 ### Yêu cầu hệ thống
 * **OS:** Windows/Linux
-* [cite_start]**Database:** Oracle Database 21c (Enterprise/Express Edition) [cite: 211]
+* **Database:** Oracle Database 21c (Enterprise/Express Edition) 
 * **Ngôn ngữ:** Python 3.x
-* [cite_start]**Thư viện:** `struct`, `os`, `re`, `cx_Oracle` (tùy chọn) [cite: 211]
+* **Thư viện:** `struct`, `os`, `re`, `cx_Oracle` (tùy chọn) 
 
 ### Các bước tái hiện thực nghiệm
 1.  **Thiết lập Database:**
@@ -72,7 +72,7 @@ Dự án sử dụng phương pháp **Disk Forensics** kết hợp với **Pytho
     ```sql
     NOAUDIT ALL ON USER1.NHANVIEN;
     DELETE FROM USER1.NHANVIEN WHERE MANV = 'NV003';
-    [cite_start]-- Lúc này Audit Log sẽ không ghi nhận lệnh DELETE này[cite: 226].
+    -- Lúc này Audit Log sẽ không ghi nhận lệnh DELETE này.
     ```
 
 3.  **Chạy Tool Carving:**
@@ -87,11 +87,11 @@ Sau khi chạy thực nghiệm, công cụ đã phát hiện thành công các h
 
 | Hành vi | Trạng thái Audit Log | Kết quả Carving | Ghi chú |
 | :--- | :---: | :---: | :--- |
-| **DELETE NV003** | ❌ Không ghi nhận | ✅ **Khôi phục thành công** | [cite_start]Tìm thấy tại Block X, Offset Y [cite: 248] |
-| **UPDATE NV004** | ❌ Không ghi nhận | ✅ **Phát hiện giá trị cũ/mới** | [cite_start]Lương thay đổi: 45tr -> 55tr [cite: 249] |
-| **INSERT NV011** | ❌ Không ghi nhận | ✅ **Phát hiện** | [cite_start]Nhận diện bản ghi mới [cite: 239] |
+| **DELETE NV003** | ❌ Không ghi nhận | ✅ **Khôi phục thành công** | Tìm thấy tại Block X, Offset Y  |
+| **UPDATE NV004** | ❌ Không ghi nhận | ✅ **Phát hiện giá trị cũ/mới** | [cite_start]Lương thay đổi: 45tr -> 55tr  |
+| **INSERT NV011** | ❌ Không ghi nhận | ✅ **Phát hiện** | Nhận diện bản ghi mới  |
 
-> [cite_start]**Kết luận:** Kỹ thuật Database Carving hoạt động hiệu quả và độc lập, không phụ thuộc vào cơ chế Log của hệ quản trị[cite: 251, 252].
+> **Kết luận:** Kỹ thuật Database Carving hoạt động hiệu quả và độc lập, không phụ thuộc vào cơ chế Log của hệ quản trị.
 
 ## 👥 Tác giả <a name="tac-gia"></a>
 Đề tài nghiên cứu khoa học - **Học viện Kỹ thuật Mật mã** .
