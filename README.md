@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/images/kma.jpg" alt="KMA Logo" width="120" height="120">
+  <img src="docs/images/kma.jpg" alt="KMA Logo" width="240" height="240">
   <h1>Database_Carving-InSQL</h1>
   
   <p>
