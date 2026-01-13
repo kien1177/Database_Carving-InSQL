@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://navigates.vn/wp-content/uploads/2023/06/logo-hoc-vien-ky-thuat-mat-ma.jpg" alt="KMA Logo" width="120" height="120">
+  <img src="docs/images/kma.jpg" alt="KMA Logo" width="120" height="120">
   <h1>Database_Carving-InSQL</h1>
   
   <p>
